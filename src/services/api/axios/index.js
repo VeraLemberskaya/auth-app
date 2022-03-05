@@ -1,0 +1,19 @@
+import axios from "axios";
+import Cookies from "js-cookie";
+
+const axiosInstance = axios.create({
+  baseUrl: "https://nestjs-boilerplate-test.herokuapp.com/api",
+});
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const authToken = Cookies.get("auth-token");
+    if (authToken) {
+      config.headers.authorixation = `Bearer ${authToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export default axiosInstance;
