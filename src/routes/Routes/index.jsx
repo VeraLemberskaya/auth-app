@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "../../pages/Home";
+import HomePage from "../../pages/Home";
 import { Container, Grid, makeStyles } from "@material-ui/core";
+import NotFoundPage from "../../pages/NotFound";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,7 +14,9 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="not-fonud-404" element={<NotFoundPage />} />
+      <Route path="*" element={<Navigate to="not-fonud=404" />} />
     </Routes>
   );
 }
