@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 function Login() {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
+  const auth = useAuth();
 
   const {
     control,
@@ -36,8 +37,22 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      //   ASYNC CODE
-    } catch {}
+      const { data: loginData } = await api.auth.login(data);
+
+      auth.setToken(loginData.token);
+      auth.setUser(loginData.user);
+    } catch (e) {
+      if (e.response.status === 422) {
+        Object.keys(e.response.data.errors).forEach((key) => {
+          setError(key, {
+            type: "manual",
+            message: e.response.data.errors[key],
+          });
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
